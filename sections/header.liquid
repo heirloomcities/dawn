@@ -18,6 +18,70 @@
     margin-left: -1.2rem;
   }
 
+  /* Screenshot-like desktop nav styling */
+  @media screen and (min-width: 990px) {
+    .header__inline-menu .list-menu--inline {
+      gap: 1.2rem;
+    }
+
+    .header__inline-menu .header__menu-item {
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      font-size: 1.2rem;
+      padding-top: 0.8rem;
+      padding-bottom: 0.8rem;
+      opacity: 0.9;
+    }
+
+    .header__inline-menu .header__menu-item .icon-caret {
+      transform: translateY(-1px);
+    }
+
+    .header__inline-menu .header__active-menu-item {
+      text-decoration-thickness: 0.12rem;
+      text-underline-offset: 0.25rem;
+    }
+  }
+
+  .header__utility-links {
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    margin-right: 0.75rem;
+    white-space: nowrap;
+  }
+
+  .header__utility-link {
+    font-size: 1.2rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 0.8rem 0;
+    opacity: 0.9;
+  }
+
+  .header__utility-link:hover,
+  .header__inline-menu .header__menu-item:hover {
+    opacity: 1;
+  }
+
+  /* Keep utility links compact on desktop */
+  @media screen and (min-width: 990px) {
+    .header__icons {
+      gap: 0.75rem;
+    }
+
+    .header__icons .header__icon,
+    .header__icons details-modal {
+      margin-left: 0;
+    }
+  }
+
+  .header__utility-divider {
+    opacity: 0.6;
+    letter-spacing: 0.2em;
+  }
+
   {%- if section.settings.sticky_header_type == 'reduce-logo-size' -%}
     .scrolled-past-header .header__heading-logo-wrapper {
       width: 75%;
@@ -234,6 +298,15 @@
       </div>
       {% render 'header-search', input_id: 'Search-In-Modal' %}
 
+      {%- if section.settings.spotify_link != blank -%}
+        <div class="header__utility-links small-hide">
+          <a class="header__utility-link link link--text focus-inset" href="{{ section.settings.spotify_link }}">
+            {{ section.settings.spotify_label | escape }}
+          </a>
+          <span class="header__utility-divider" aria-hidden="true">|</span>
+        </div>
+      {%- endif -%}
+
       {%- if shop.customer_accounts_enabled -%}
         <a
           href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}"
@@ -270,20 +343,13 @@
         {%- endcase -%}
       {%- endfor -%}
 
-      <a href="{{ routes.cart_url }}" class="header__icon header__icon--cart link focus-inset" id="cart-icon-bubble">
-          {% if cart == empty %}
-            <span class="svg-wrapper">{{'icon-cart-empty.svg' | inline_asset_content }}</span>
-          {% else %}
-            <span class="svg-wrapper">{{'icon-cart.svg' | inline_asset_content }}</span>
-          {% endif %}
+      <a href="{{ routes.cart_url }}" class="header__utility-link link link--text focus-inset" id="cart-icon-bubble">
+        {{ section.settings.cart_label | escape }}
         <span class="visually-hidden">{{ 'templates.cart.cart' | t }}</span>
         {%- if cart != empty -%}
-          <div class="cart-count-bubble">
-            {%- if cart.item_count < 100 -%}
-              <span aria-hidden="true">{{ cart.item_count }}</span>
-            {%- endif -%}
-            <span class="visually-hidden">{{ 'sections.header.cart_count' | t: count: cart.item_count }}</span>
-          </div>
+          <span class="cart-count-bubble" aria-hidden="true">
+            {%- if cart.item_count < 100 -%}{{ cart.item_count }}{%- endif -%}
+          </span>
         {%- endif -%}
       </a>
     </div>
@@ -498,6 +564,23 @@
       "id": "menu",
       "default": "main-menu",
       "label": "t:sections.header.settings.menu.label"
+    },
+    {
+      "type": "url",
+      "id": "spotify_link",
+      "label": "Spotify link"
+    },
+    {
+      "type": "text",
+      "id": "spotify_label",
+      "label": "Spotify label",
+      "default": "Spotify"
+    },
+    {
+      "type": "text",
+      "id": "cart_label",
+      "label": "Cart label",
+      "default": "Cart"
     },
     {
       "type": "select",
