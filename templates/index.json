@@ -9,29 +9,6 @@
  */
 {
   "sections": {
-    "hero_video": {
-      "type": "hero-video",
-      "blocks": {
-        "heading": {
-          "type": "heading",
-          "settings": {
-            "heading": "",
-            "heading_size": "h0"
-          }
-        }
-      },
-      "block_order": [
-        "heading"
-      ],
-      "settings": {
-        "video": "shopify://files/videos/HC Brand Video.mp4",
-        "section_height": "large",
-        "overlay_opacity": 35,
-        "content_position": "center",
-        "content_alignment": "center",
-        "color_scheme": "scheme-1"
-      }
-    },
     "rich_text": {
       "type": "rich-text",
       "blocks": {
@@ -198,7 +175,6 @@
     }
   },
   "order": [
-    "hero_video",
     "rich_text",
     "featured_collection",
     "collage",
